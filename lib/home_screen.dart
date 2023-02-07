@@ -19,6 +19,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    getElectronics().then((value) {
+      setState(() {
+        items.addAll(value);
+        duplicateItems.addAll(value);
+      });
+    });
     super.initState();
   }
 
@@ -35,6 +41,12 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               onChanged: (value) {
+                if (value.isEmpty) {
+                  setState(() {
+                    items = duplicateItems;
+                  });
+                  return;
+                }
                 setState(() {
                   items = duplicateItems
                       .where((element) => element.title
@@ -55,22 +67,27 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: FutureBuilder<List<Electronics>>(
               future: getElectronics(),
-              builder: (context, snapshot) => snapshot.hasData
-                  ? ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(snapshot.data![index].title),
-                          subtitle: Text(snapshot.data![index].description),
-                          leading: Image.network(
-                            snapshot.data![index].images[0],
-                            width: 100,
-                            height: 100,
-                          ),
-                        );
-                      },
-                    )
-                  : Center(child: CircularProgressIndicator()),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  duplicateItems = snapshot.data!;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(items[index].title),
+                        subtitle: Text(items[index].description),
+                        leading: Image.network(items[index].images[0],
+                            width: 100, height: 100),
+                        trailing: Text(items[index].price.toString()),
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return const Text("Error");
+                }
+                return const Center(child: CircularProgressIndicator());
+              },
             ),
           ),
         ],
