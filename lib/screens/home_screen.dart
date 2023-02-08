@@ -1,5 +1,5 @@
-import 'package:e_com/data_layer.dart';
-import 'package:e_com/electronics.dart';
+import 'package:e_com/data/data_layer.dart';
+import 'package:e_com/model/electronics.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

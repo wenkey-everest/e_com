@@ -1,4 +1,4 @@
-import 'package:e_com/electronics.dart';
+import 'package:e_com/model/electronics.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Electronics>> getElectronics() async {
