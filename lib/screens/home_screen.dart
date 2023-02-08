@@ -2,16 +2,16 @@ import 'package:e_com/data/data_layer.dart';
 import 'package:e_com/model/electronics.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   final String title;
 
-  HomePage({required this.title, super.key});
+  HomeScreen({required this.title, super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   TextEditingController editingController = TextEditingController();
   late List<Electronics> duplicateItems =
       List<Electronics>.empty(growable: true);
@@ -76,7 +76,17 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: (context, index) {
                       return ListTile(
                         title: Text(items[index].title),
-                        subtitle: Text(items[index].description),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(items[index].description),
+                            Text(items[index].category),
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: const Text("Add to Cart"),
+                            )
+                          ],
+                        ),
                         leading: Image.network(items[index].images[0],
                             width: 100, height: 100),
                         trailing: Text(items[index].price.toString()),
